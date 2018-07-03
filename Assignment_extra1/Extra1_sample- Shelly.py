@@ -15,12 +15,12 @@ def symbolToNumber(symbol): #Funktion, die zu jedem Symbol (Base) eine Zahl zuwe
     if symbol == "T":
         return 3
 
-def numberToPattern(index, k):
+def numberToPattern(index, k): #Funktion defnieren, die mithilfe der numberToSymbol Funktion eine Zahl in ein String umwandelt
     if k == 1:
         return numberToSymbol(index)
     return numberToPattern(index // 4, k-1) + numberToSymbol(index % 4)
 
-def numberToSymbol(index):
+def numberToSymbol(index): #Funktion, die einer Zahl ein bestimmtes Symbol (Base) zuweist
     if index == 0:
         return "A"
     if index == 1:
@@ -30,7 +30,7 @@ def numberToSymbol(index):
     if index == 3:
         return "T"
 
-def profileProbable(text, k, profile):
+def profileProbable(text, k, profile): #Funktion, die ein Profil mit Wahrscheinlichkeiten erstellt
     maxprob = 0
     kmer = text[0:k]
     for i in range(0, len(text) - k +1):
@@ -44,7 +44,7 @@ def profileProbable(text, k, profile):
             kmer = pattern
     return kmer
 
-def profileRandom(k,profile, text):
+def profileRandom(k,profile, text): #Funktion, die zufällig die gebrauchten Profilen erstellt
     probs = []
     for i in range(0, len(text) - k+1):
         prob = 1.0
@@ -56,14 +56,14 @@ def profileRandom(k,profile, text):
     r = myRandom(probs)
     return r
 
-def hammingDistance(p, q):
+def hammingDistance(p, q): #Funktion, die Hamming Distance, also die Unterschiede zwischen 2 Strings, berechnet
     ham = 0
     for index, y in zip(p, q):
         if index != y:
             ham +=1
     return ham
 
-def distanceBetweenPatternAndString(pattern, DNA):
+def distanceBetweenPatternAndString(pattern, DNA): #Funktion, die Unterschied zwischen dem untersuchten Pattern (Basensequenz) und dem DNA Strang berechnet
     k = len(pattern)
     distance = 0
     for index in DNA:
@@ -87,7 +87,7 @@ def profileForm(motifs):
             index[i] = index[i]/len(motifs)
     return profile
 
-def consensus(profile):
+def consensus(profile): #Funktion, die die wahrscheinlichste Sequenz, also Consensus Sequenz, ermittelt
     str = ""
     for i in range(len(profile[0])):
         max = 0
@@ -99,7 +99,7 @@ def consensus(profile):
         str+=numberToSymbol(loc)
     return str
 
-def score(motifs):
+def score(motifs): #Funktion, die den score der Motive ausrechnet (je niedriger der Score, desto besser)
     profile = profileForm(motifs)
     cons = consensus(profile)
     score = 0
@@ -120,7 +120,7 @@ def myRandom(dist):
         if partial/s >= i:
             return index
 
-def gibbsSampler(DNA, k, t, n):
+def gibbsSampler(DNA, k, t, n): #Gibbs Sampler Funktion
     bestMotifs = []
     motifs = []
     for index in range(t):
@@ -138,15 +138,15 @@ def gibbsSampler(DNA, k, t, n):
 
 
 
-k = 8
-t = 5
-n = 100
+k = 8 #Länge der kmere ist 8
+t = 5 #5 DNA Sequenzen
+n = 100 #Länge der DNA Sequenzen ist 100
 DNA = ["CGCCCCTCTCGGGGGTGTTCAGTAAACGGCCA", "GGGCGAGGTATGTGTAAGTGCCAAGGTGCCAG", "TAGTACCGAGACCGAAAGAAGTATACAGGCGT", "TAGATCAAGTTTCAGGTGCACGTCGGTGAACC", "AATCCACCAGCTCCACGTGCAATGTTGGCCTA"]
-
-best = gibbsSampler(DNA, k, t, n)
-s = score(best)
-print(s)
-for index in range(50):
+#Input DNA Sequenzen
+best = gibbsSampler(DNA, k, t, n)#bestes Ergebnis ist das, was bei der GibbsSampler Funktion raus kommt
+s = score(best)#berechne den score von best
+print(s) # gebe den score an
+for index in range(50): 
     sample = gibbsSampler(DNA, k, t, n)
     print(score(sample))
     if score(sample) < s:
