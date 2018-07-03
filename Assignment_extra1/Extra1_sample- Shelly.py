@@ -1,11 +1,11 @@
-import random
+import random #voreingestellte Pythonfunktion um Random Algorithmus zu generieren
 
-def patternToNumber(pattern):
+def patternToNumber(pattern): #Funktion definieren die mithilfe der symbolToNumber Funktion aus einem String pattern eine Zahl generiert
     if len(pattern) == 0:
         return 0
     return 4 * patternToNumber(pattern[0:-1]) + symbolToNumber(pattern[-1:])
 
-def symbolToNumber(symbol):
+def symbolToNumber(symbol): #Funktion, die zu jedem Symbol (Base) eine Zahl zuweist
     if symbol == "A":
         return 0
     if symbol == "C":
@@ -154,3 +154,4 @@ for index in range(50):
         best = sample[:]
 for b in best:
     print(b)
+ #inspired by Nathaniel Lovin
